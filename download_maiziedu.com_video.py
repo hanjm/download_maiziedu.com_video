@@ -2,7 +2,7 @@
 # @Author: hanjinming
 # @Date:   2016-08-02 08:53:49
 # @Last Modified by:   hanjinming
-# @Last Modified time: 2016-08-02 10:02:58
+# @Last Modified time: 2016-08-03 21:37:14
 
 import os
 import re
@@ -36,10 +36,17 @@ def parse_href(string):
 
 # 视频url元组
 def parse_videos(string, count):
-    regexp = re.compile(r'http://.+?-[0-9]{2}\.mp4')  # match video url
-    url_base = regexp.findall(string)[0][:-7]
-    count_list = list(range(1, count + 1))
-    videos = [url_base + '-%02d.mp4' % i for i in count_list]
+    try:
+        regexp = re.compile(r'http://.+?-[0-9]{2}\.mp4')  # match video url
+        url_base = regexp.findall(string)[0][:-7]
+        count_list = list(range(1, count + 1))
+        videos = [url_base + '-%02d.mp4' % i for i in count_list]
+    except Exception as e:
+        print 'regexp1 not match,trying regexp2 %s' % e
+        regexp = re.compile(r'http://.+?[0-9]{1}\.mp4')
+        url_base = regexp.findall(string)[0][:-5]
+        count_list = list(range(1, count + 1))
+        videos = [url_base + '%d.mp4' % i for i in count_list]
     return videos
 
 
@@ -66,7 +73,7 @@ if __name__ == '__main__':
         print 'matching...'
         html = urllib2.urlopen(url[:34]).read()
         course_title = parse_title(html)
-        print 'matched title:%s' % course_title
+        print 'matched title:%s' % course_title.decode('utf-8')
         if not os.path.exists(course_title.decode('utf-8')):
             os.mkdir(course_title.decode('utf-8'))
         os.chdir(course_title.decode('utf-8'))
@@ -80,3 +87,4 @@ if __name__ == '__main__':
             pool.apply_async(download_file, args=(videos[i], items[i]))
         pool.close()
         pool.join()
+        os.chdir(os.path.dirname(__file__))
