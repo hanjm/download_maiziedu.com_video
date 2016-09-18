@@ -53,7 +53,8 @@ if __name__ == '__main__':
     print(u'Start parsing... total %d items' % count)
     for index, url in enumerate(urls):
         course_dir = u'course{}'.format(index + 1)
-        os.mkdir(course_dir)
+        if not os.path.exists('url.txt'):
+            os.mkdir(course_dir)
         os.chdir(course_dir)
         parse_course(url)
         os.chdir('../')
