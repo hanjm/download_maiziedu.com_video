@@ -1,3 +1,1 @@
-http://www.maiziedu.com/course/645-9570/  #爬虫基础
-http://www.maiziedu.com/course/458/     #scrapy
-http://www.maiziedu.com/course/307/  #django基础
+http://www.maiziedu.com/course/395/

@@ -1,1 +1,1 @@
-python download_maiziedu.com_video.py
+python download_maiziedu_video/main.py
